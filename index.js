@@ -67,10 +67,25 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
   const person = request.body
+
+  if (person.name === undefined) {
+    return response.status(400).json({error: 'name is missing'})
+  }
+  if (person.number === undefined) {
+    return response.status(400).json({error: 'number is missing'})
+  }
+
+  const checkifalready = persons.find(n => n.name === person.name)
+  //console.log(checkifalready)
+
+  if (checkifalready !== undefined) {
+    return response.status(409).json({error: 'name must be unique'})
+  }
+
+
+
   person.id = Math.floor((Math.random() * 1000000) + 1)
-
-  console.log(person.id)
-
+  //console.log(person.id)
 
   persons = persons.concat(person)
 
