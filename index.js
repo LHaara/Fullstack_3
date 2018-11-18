@@ -24,13 +24,10 @@ app.get('/info', (req, res) => {
     .catch(error => {
       console.log(error)
     })
-
-
 /*   Person.estimatedDocumentCount({}, function (err, count){
     console.log(count)
     res.send("puhelinluettelossa on "+count+" henkilön tiedot<br></br>"+d)
   }) */
-
   
 })
 
@@ -85,23 +82,47 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-  const body = request.body
-  
+  const body = request.body  
 
-/*   if (body.name === undefined) {
-    return response.status(400).json({error: 'name is missing'})
-  }
-  if (body.number === undefined) {
-    return response.status(400).json({error: 'number is missing'})
-  } */
+  Person
+    .find({name: body.name})
+    .then(res => {
+      //console.log(res)
+      if (typeof res !== 'undefined' && res.length > 0) {
+        response.status(409).json({error: 'name must be unique'})
+       }
+      else {
+
+        const person = new Person({
+          name: body.name,
+          number: body.number
+        })
+
+        person
+        .save()
+        .then(savedPerson => {
+          response.json(Person.format(savedPerson))
+    
+        })
+        .catch(error => {
+          console.log(error)
+    
+        })
+
+      }
+
+    })
+    .catch(error => {
+      console.log(error)
+    })
+
 
 /*   const checkifalready = persons.find(n => n.name === body.name)
   if (checkifalready !== undefined) {
     return response.status(409).json({error: 'name must be unique'})
   } */
 
-
-  const person = new Person({
+/*   const person = new Person({
     name: body.name,
     number: body.number
   })
@@ -115,9 +136,8 @@ app.post('/api/persons', (request, response) => {
     .catch(error => {
       console.log(error)
 
-    })
+    }) */
 })
-
 
 app.put('/api/persons/:id', (req, res) =>{
   const person = req.body
