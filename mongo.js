@@ -21,9 +21,9 @@ const Person = mongoose.model('Person', personSchema)
 // jos edes numero puuttuu argumenteista, listataan tiedot
 if (process.argv[3] === undefined){
 
-    console.log('puhelinluettelo:')
+  console.log('puhelinluettelo:')
 
-    Person
+  Person
     .find({})
     .then(persons => {
       persons.forEach(person => {
@@ -36,17 +36,17 @@ if (process.argv[3] === undefined){
 }
 else{
 
-    const person = new Person({
-        name: process.argv[2],
-        number: process.argv[3]
-      })
-     
-      person
-      .save()
-      .then(response => {
-        console.log('lisätään henkilö ',person.name,' numero ',person.number,' luetteloon')
-        mongoose.connection.close()
-      })
+  const person = new Person({
+    name: process.argv[2],
+    number: process.argv[3]
+  })
+
+  person
+    .save()
+    .then(response => {
+      console.log('lisätään henkilö ',person.name,' numero ',person.number,' luetteloon')
+      mongoose.connection.close()
+    })
 
 }
 
