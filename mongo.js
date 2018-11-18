@@ -1,13 +1,22 @@
 const mongoose = require('mongoose')
 
 const url = 'mongodb://'+process.env.DB_USER+':'+process.env.DB_PASS+'@ds063769.mlab.com:63769/kovisten_puhelinnumerot'
-
 mongoose.connect(url, { useNewUrlParser: true })
 
-const Person = mongoose.model('Person', {
-    name: String,
-    number: String
-  })
+const personSchema = new mongoose.Schema({
+  name: String,
+  number: String
+})
+personSchema.statics.format = function (person){
+  return {
+    name: person.name,
+    number: person.number,
+    id: person._id
+  }
+}
+
+const Person = mongoose.model('Person', personSchema)
+
 
 // jos edes numero puuttuu argumenteista, listataan tiedot
 if (process.argv[3] === undefined){
@@ -19,6 +28,7 @@ if (process.argv[3] === undefined){
     .then(persons => {
       persons.forEach(person => {
         console.log(person.name, person.number)
+        //console.log(Person.format(person))
       })
       mongoose.connection.close()
     })
