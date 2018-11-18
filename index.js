@@ -58,7 +58,10 @@ app.delete('/api/persons/:id', (request, response) => {
   .then(person => {
     response.json(Person.format(person))
   })
+  .catch(error => {
+    console.log(error)
 
+  })
 /*   const id = Number(request.params.id)
   persons = persons.filter(person => person.id !== id)
   response.status(204).end() */
@@ -66,13 +69,14 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
+  
 
-  if (body.name === undefined) {
+/*   if (body.name === undefined) {
     return response.status(400).json({error: 'name is missing'})
   }
   if (body.number === undefined) {
     return response.status(400).json({error: 'number is missing'})
-  }
+  } */
 
 /*   const checkifalready = persons.find(n => n.name === body.name)
   if (checkifalready !== undefined) {
@@ -91,7 +95,10 @@ app.post('/api/persons', (request, response) => {
       response.json(Person.format(savedPerson))
 
     })
+    .catch(error => {
+      console.log(error)
 
+    })
 })
 
 
