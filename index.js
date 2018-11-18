@@ -14,9 +14,24 @@ app.use(morgan(':method :url :data :status :res[content-length] - :response-time
 
 app.get('/info', (req, res) => {
   const d = new Date()
-  const amount= persons.length
 
-  res.send("puhelinluettelossa on "+amount+" henkilön tiedot<br></br>"+d)
+  Person
+    .estimatedDocumentCount({})
+    .then(count => {
+      console.log(count)
+      res.send("puhelinluettelossa on "+count+" henkilön tiedot<br></br>"+d)
+    })  
+    .catch(error => {
+      console.log(error)
+    })
+
+
+/*   Person.estimatedDocumentCount({}, function (err, count){
+    console.log(count)
+    res.send("puhelinluettelossa on "+count+" henkilön tiedot<br></br>"+d)
+  }) */
+
+  
 })
 
 app.get('/', (req, res) => {
