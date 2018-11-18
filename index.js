@@ -116,8 +116,6 @@ app.post('/api/persons', (request, response) => {
     .catch(error => {
       console.log(error)
     })
-
-
 /*   const checkifalready = persons.find(n => n.name === body.name)
   if (checkifalready !== undefined) {
     return response.status(409).json({error: 'name must be unique'})
