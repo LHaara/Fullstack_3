@@ -48,19 +48,21 @@ app.get('/api/persons/:id', (request, response) => {
     .then(person => {
       response.json(Person.format(person))
     })
+    .catch(error => {
+      console.log(error)
+    })
 
 })
 
 
 app.delete('/api/persons/:id', (request, response) => {
   Person
-  .findById(request.params.id)
+  .findByIdAndDelete(request.params.id)
   .then(person => {
     response.json(Person.format(person))
   })
   .catch(error => {
     console.log(error)
-
   })
 /*   const id = Number(request.params.id)
   persons = persons.filter(person => person.id !== id)
