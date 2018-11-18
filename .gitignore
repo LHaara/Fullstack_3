@@ -10,6 +10,7 @@
 # /build
 
 #salasana
+.env
 mlab-env
 #mongo.js
 #/models/person.js

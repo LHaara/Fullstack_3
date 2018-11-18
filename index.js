@@ -89,6 +89,7 @@ app.post('/api/persons', (request, response) => {
     .then(res => {
       //console.log(res)
       if (typeof res !== 'undefined' && res.length > 0) {
+
         response.status(409).json({error: 'name must be unique'})
        }
       else {
