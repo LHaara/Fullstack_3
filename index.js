@@ -45,10 +45,15 @@ app.get('/api/persons/:id', (request, response) => {
   Person
     .findById(request.params.id)
     .then(person => {
-      response.json(Person.format(person))
+      if (person) {
+        response.json(Person.format(person))
+      } else {
+        response.status(404).end()
+      }
     })
     .catch(error => {
       console.log(error)
+      response.status(400).send({ error: 'malformatted id' })
     })
 
 })
@@ -62,6 +67,7 @@ app.delete('/api/persons/:id', (request, response) => {
     })
     .catch(error => {
       console.log(error)
+      response.status(400).send({ error: 'malformatted id' })
     })
 
 })
@@ -108,12 +114,13 @@ app.put('/api/persons/:id', (req, res) => {
   const person = req.body
 
   Person
-    .findByIdAndUpdate(req.params.id, person)
+    .findByIdAndUpdate(req.params.id, person, { new: true })
     .then(person => {
       res.json(Person.format(person))
     })
     .catch(error => {
       console.log(error)
+      res.status(400).send({ error: 'malformatted id' })
     })
 
 })
