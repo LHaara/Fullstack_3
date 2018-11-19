@@ -63,7 +63,8 @@ app.delete('/api/persons/:id', (request, response) => {
   Person
     .findByIdAndDelete(request.params.id)
     .then(person => {
-      response.json(Person.format(person))
+      console.log(person)
+      response.status(204).end()
     })
     .catch(error => {
       console.log(error)
@@ -75,39 +76,43 @@ app.delete('/api/persons/:id', (request, response) => {
 app.post('/api/persons', (request, response) => {
   const body = request.body
 
-  Person
-    .find( { name: body.name } )
-    .then(res => {
-      //console.log(res)
-      if (typeof res !== 'undefined' && res.length > 0) {
+  if (body.name === undefined) {
+    response.status(400).json({ error: 'content missing' })
+  }
+  else {
+    Person
+      .find( { name: body.name } )
+      .then(res => {
+        //console.log(res)
+        if (typeof res !== 'undefined' && res.length > 0) {
 
-        response.status(409).json({ error: 'name must be unique' })
-      }
-      else {
+          response.status(409).json({ error: 'name must be unique' })
+        }
+        else {
 
-        const person = new Person({
-          name: body.name,
-          number: body.number
-        })
-
-        person
-          .save()
-          .then(savedPerson => {
-            response.json(Person.format(savedPerson))
-
-          })
-          .catch(error => {
-            console.log(error)
-
+          const person = new Person({
+            name: body.name,
+            number: body.number
           })
 
-      }
+          person
+            .save()
+            .then(savedPerson => {
+              response.json(Person.format(savedPerson))
 
-    })
-    .catch(error => {
-      console.log(error)
-    })
+            })
+            .catch(error => {
+              console.log(error)
 
+            })
+
+        }
+
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
 })
 
 app.put('/api/persons/:id', (req, res) => {
